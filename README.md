@@ -45,3 +45,12 @@ Tests are timed exactly when all worker threads are busy-waiting for append oper
 | 16          | 460.20 µs           | 546.95 µs              |
 | 64          | 1.0637 ms           | 1.8535 ms              |
 | 128         | 3.6124 ms           | 6.9506 ms              |
+
+## License
+
+Licensed under either of
+
+ * Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or http://www.apache.org/licenses/LICENSE-2.0)
+ * MIT license ([LICENSE-MIT](LICENSE-MIT) or http://opensource.org/licenses/MIT)
+
+at your option.
