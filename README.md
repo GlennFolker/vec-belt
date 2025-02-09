@@ -9,7 +9,7 @@ Under the hood, `VecBelt<T>` is implemented as a linked list of dynamically size
 - `VecBelt<T>` operates much faster than `Mutex<Vec<T>>`, except on very low contentions (in my case it was 4 threads times 4 appends per threads). See [benchmarks](#benchmarks) below.
 - `VecBelt<T>` is non-blocking, i.e. it doesn't invoke system calls to park or unpark threads in any way (worst case scenario, it yields to the CPU scheduler. Backed by `crossbeam-utils`'s exponential `Backoff`). This works because acquisitions to the sychronization primitive is extremely short-lived.
 - `VecBelt<T>` is append-only when accessed immutably from threads, while `Mutex<Vec<T>>` grants every operations.
-- `VecBelt<T>` may only append collections that coerce into a slice (`[T]` or `&[T] where T: Copy`), which notably don't include most iterator adapters. This is because `append(&self, ..)` requires all transfer operations to not diverge (e.g. `panic!(..)`), otherwise the fragment slice may end up with uninitialized memory which will lead to undefined behavior when used or even dropped.
+- `VecBelt<T>` may only append collections that coerce into a slice (`[T]` or `&[T] where T: Copy`), which notably don't include most iterator adapters. This is because `append(&self, ..)` requires all transfer operations to not diverge (e.g. `panic!(..)`), otherwise the fragment slice may end up with uninitialized memory which will lead to **undefined behavior** when used or even dropped.
 
 ## Benchmarks
 
