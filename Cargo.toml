@@ -1,0 +1,25 @@
+[package]
+name = "vec-belt"
+description = "Multi-threaded bulk-append, single-threaded consume `Vec<T>`."
+authors = ["GlFolker"]
+version = "1.0.0"
+edition = "2021"
+exclude = [
+    "benches",
+    "bench_result",
+    "tests",
+]
+
+[dependencies]
+crossbeam-utils = "0.8"
+likely_stable = "0.1"
+
+[dev-dependencies]
+criterion = { version = "0.5", default-features = false, features = ["cargo_bench_support", "plotters", "html_reports"] }
+
+[[test]]
+name = "vec_belt"
+
+[[bench]]
+name = "belt_vs_mutex"
+harness = false
