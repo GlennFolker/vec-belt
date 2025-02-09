@@ -9,6 +9,7 @@ use std::{
     marker::PhantomData,
     mem::{ManuallyDrop, MaybeUninit},
     ops::{Deref, DerefMut},
+    panic::{RefUnwindSafe, UnwindSafe},
     ptr::{addr_eq, null_mut, slice_from_raw_parts, slice_from_raw_parts_mut, NonNull},
     sync::atomic::{AtomicUsize, Ordering::*},
 };
@@ -85,11 +86,18 @@ pub struct VecBelt<T> {
     tail: UnsafeCell<NonNull<Fragment<T>>>,
 }
 
-/// Safety: [`VecBelt<T>`] provides synchronization primitives that won't lead to data races.
+/// # Safety
+///
+/// [`VecBelt<T>`] provides synchronization primitives that won't lead to data races.
 unsafe impl<T: Send> Send for VecBelt<T> {}
-/// Safety: `T: Sync` isn't necessary here, because there is guaranteed not to be references to the
-/// same elements across threads.
+/// # Safety
+///
+/// `T: Sync` isn't necessary here, because there is guaranteed not to be references to the same
+/// elements across threads.
 unsafe impl<T: Send> Sync for VecBelt<T> {}
+
+impl<T> UnwindSafe for VecBelt<T> {}
+impl<T> RefUnwindSafe for VecBelt<T> {}
 
 impl<T> VecBelt<T> {
     /// Creates a new [`VecBelt<T>`], preallocating a fragment of the given initial size.
